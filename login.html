@@ -35,7 +35,7 @@
         const email = document.getElementById('email').value
         const pass = document.getElementById('pass').value
         
-        const res = await fetch(`${URL}/auth/v1/token?grant_type=password`, {
+        const res = await fetch(URL + '/auth/v1/token?grant_type=password', {
             method: 'POST',
             headers: { 'apikey': KEY, 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password: pass })
@@ -45,10 +45,10 @@
         console.log(data)
         
         if (data.error) {
-            alert('Error: ' + data.error_description || data.error)
+            alert('Error: ' + (data.error_description || data.error))
             btn.textContent = 'Sign In'
         } else {
-            alert('✅ Logged in! Welcome to Mehis!')
+            alert('OK! Logged in!')
             localStorage.setItem('mehis_token', data.access_token)
             location.href = 'dashboard.html'
         }
