@@ -5,167 +5,102 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register - Mehis</title>
     <style>
-        :root {
-            --primary: #FF6B35;
-            --primary-light: #FF8F66;
-            --dark: #1a1a1a;
-            --light: #fafafa;
-            --gray: #666;
-            --border: #e0e0e0;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        }
-        
-        body {
-            background: #F5F5DC;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
-        
-        .register-container {
-            background: #F5F5DC;
-            padding: 50px;
-            border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            width: 100%;
-            max-width: 420px;
-        }
-        
-        .logo {
-            text-align: center;
-            font-size: 28px;
-            font-weight: 800;
-            color: var(--primary);
-            margin-bottom: 10px;
-            text-decoration: none;
-        }
-        
-        .logo span {
-            color: var(--dark);
-        }
-        
-        h1 {
-            text-align: center;
-            font-size: 24px;
-            margin-bottom: 8px;
-        }
-        
-        p.subtitle {
-            text-align: center;
-            color: var(--gray);
-            margin-bottom: 30px;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        label {
-            display: block;
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-        
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.2s;
-        }
-        
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .btn {
-            width: 100%;
-            padding: 16px;
-            background: #2C3E50;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        
-        .btn:hover {
-            background: var(--primary-light);
-        }
-        
-        .terms {
-            font-size: 13px;
-            color: var(--gray);
-            margin-top: 15px;
-            text-align: center;
-        }
-        
-        .terms a {
-            color: var(--primary);
-            text-decoration: none;
-        }
-        
-        .signup-link {
-            text-align: center;
-            margin-top: 25px;
-            color: var(--gray);
-        }
-        
-        .signup-link a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 600;
-        }
+        :root { --primary: #2C3E50; --primary-light: #3D5A80; --dark: #36454F; --light: #F5F5DC; --gray: #666; --border: #ddd; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, sans-serif; }
+        body { background: #F5F5DC; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .register-container { background: white; padding: 50px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 420px; }
+        .logo { text-align: center; font-size: 28px; font-weight: 800; color: #2C3E50; margin-bottom: 10px; text-decoration: none; }
+        .logo span { color: #2C3E50; }
+        h1 { text-align: center; font-size: 24px; margin-bottom: 8px; }
+        p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
+        input { width: 100%; padding: 14px 16px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; background: #F5F5DC; }
+        input:focus { outline: none; border-color: #2C3E50; }
+        .btn { width: 100%; padding: 16px; background: #2C3E50; color: #F5F5DC; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .btn:hover { background: #3D5A80; }
+        .terms { font-size: 13px; color: #666; margin-top: 15px; text-align: center; }
+        .terms a { color: #2C3E50; text-decoration: none; }
+        .signup-link { text-align: center; margin-top: 25px; color: #666; }
+        .signup-link a { color: #2C3E50; text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>
     <div class="register-container">
         <a href="index.html" class="logo">Mehis<span>.ai</span></a>
-        
         <h1>Create your account</h1>
         <p class="subtitle">Start getting better ADHD parenting advice today</p>
         
         <form id="registerForm">
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" id="name" placeholder="Your name" required>
+                <input type="text" id="full_name" placeholder="Your name" required>
             </div>
-            
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" id="email" placeholder="you@example.com" required>
             </div>
-            
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" id="password" placeholder="Create a password" required minlength="8">
             </div>
-            
             <button type="submit" class="btn">Create Account</button>
         </form>
         
-        <p class="terms">
-            By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>
-        </p>
-        
-        <p class="signup-link">
-            Already have an account? <a href="login.html">Sign in</a>
-        </p>
+        <p class="terms">By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></p>
+        <p class="signup-link">Already have an account? <a href="login.html">Sign in</a></p>
     </div>
-    
+
     <script>
+    const SUPABASE_URL = 'https://etgaxhkizapqzzxdttrn.supabase.co'
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Z2F4aGtpemFwcXp6eGR0dHJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzMzOTQsImV4cCI6MjA5MTI0OTM5NH0.XlgKhu0wAo1570kgexl5a9gnhD-x0e_eOs7O_ucK640'
+
+    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+        e.preventDefault()
+        
+        const email = document.getElementById('email').value
+        const password = document.getElementById('password').value
+        const fullName = document.getElementById('full_name').value
+        const btn = this.querySelector('.btn')
+        
+        btn.textContent = 'Creating account...'
+        
+        try {
+            // Register with Supabase Auth
+            const authResp = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
+                method: 'POST',
+                headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            })
+            
+            const authData = await authResp.json()
+            
+            if (authData.error) {
+                alert('Error: ' + authData.error.message)
+                btn.textContent = 'Create Account'
+                return
+            }
+            
+            // Add to users table
+            const userResp = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+                method: 'POST',
+                headers: { 
+                    'apikey': SUPABASE_ANON_KEY, 
+                    'Authorization': `Bearer ${authData.session.access_token}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal'
+                },
+                body: JSON.stringify({ id: authData.user.id, email: email, full_name: fullName, tier: 'free' })
+            })
+            
+            alert('Account created! Check your email to verify, then login.')
+            window.location.href = 'login.html'
+            
+        } catch(err) {
+            alert('Error: ' + err.message)
+            btn.textContent = 'Create Account'
+        }
+    })
+    </script>
 </body>
 </html>
