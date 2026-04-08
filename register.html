@@ -75,7 +75,7 @@
             
             const authData = await authResp.json()
             
-            if (authData.error) {
+            if (authData.error || !authData.user) {
                 alert('Error: ' + authData.error.message)
                 btn.textContent = 'Create Account'
                 return
@@ -86,7 +86,7 @@
                 method: 'POST',
                 headers: { 
                     'apikey': SUPABASE_ANON_KEY, 
-                    'Authorization': `Bearer ${authData.session.access_token}`,
+                    'Authorization': `Bearer ${authData.session ? authData.session.access_token : authData.access_token}`,
                     'Content-Type': 'application/json',
                     'Prefer': 'return=minimal'
                 },
@@ -94,7 +94,7 @@
             })
             
             alert('Account created! Check your email to verify, then login.')
-            window.location.href = 'login.html'
+            window.location.href = "login.html?utm=verified"
             
         } catch(err) {
             alert('Error: ' + err.message)
