@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Mehis</title>
+    <style>
+        body { background: #F5F5DC; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
+        .box { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
+        h1 { color: #2C3E50; }
+        .card { background: #F5F5DC; padding: 20px; border-radius: 10px; margin: 15px 0; }
+        .btn { background: #2C3E50; color: #F5F5DC; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>🍯 Welcome to Mehis!</h1>
+        
+        <div class="card">
+            <h3>Your Account</h3>
+            <p><strong>Tier:</strong> Free</p>
+            <p><strong>Questions today:</strong> 0 / 10</p>
+        </div>
+        
+        <div class="card">
+            <h3>Start Using Mehis</h3>
+            <p>Go to Telegram and message <strong>@Mehis</strong></p>
+            <p>Use code: <strong>LOGGEDIN</strong></p>
+        </div>
+        
+        <a href="index.html" class="btn">Home</a>
+        <button onclick="logout()" class="btn" style="background:#c0392b">Logout</button>
+    </div>
+    
+    <script>
+    function logout() {
+        localStorage.removeItem('mehis_token')
+        location.href = 'login.html'
+    }
+    </script>
+</body>
+</html>
