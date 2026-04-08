@@ -3,23 +3,379 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mehis - Your Private ADHD Coaching Assistant</title>
+    <title>Mehis - Your ADHD Coaching Assistant</title>
     <style>
-        body { font-family: -apple-system, sans-serif; margin: 0; padding: 0; }
-        header { background: linear-gradient(135deg, #FF6B35, #F7C59F); color: white; padding: 40px; text-align: center; }
-        h1 { margin: 0; font-size: 3rem; }
-        .hero { padding: 60px 20px; text-align: center; }
-        .cta-button { display: inline-block; background: #FF6B35; color: white; padding: 18px 40px; font-size: 1.2rem; border-radius: 50px; text-decoration: none; }
+        :root {
+            --primary: #FF6B35;
+            --primary-light: #FF8F66;
+            --dark: #1a1a1a;
+            --light: #fafafa;
+            --gray: #666;
+            --border: #e0e0e0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 40px;
+            background: white;
+            border-bottom: 1px solid var(--border);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .logo span {
+            color: var(--dark);
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--gray);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        .btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-outline {
+            border: 2px solid var(--dark);
+            background: transparent;
+            color: var(--dark);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 160px 40px 100px;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        
+        .hero h1 span {
+            color: var(--primary);
+        }
+        
+        .hero p {
+            font-size: 20px;
+            color: var(--gray);
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .hero .btn {
+            padding: 16px 32px;
+            font-size: 18px;
+        }
+        
+        /* Features */
+        .features {
+            padding: 100px 40px;
+            background: white;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        .feature-card {
+            padding: 40px;
+            background: var(--light);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+        }
+        
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+        
+        .feature-card p {
+            color: var(--gray);
+            font-size: 15px;
+        }
+        
+        /* Pricing */
+        .pricing {
+            padding: 100px 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .pricing h2 {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 60px;
+        }
+        
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .pricing-card {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        
+        .pricing-card.featured {
+            border: 2px solid var(--primary);
+            position: relative;
+        }
+        
+        .pricing-card.featured::before {
+            content: 'Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .pricing-card h3 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+        
+        .pricing-card .price {
+            font-size: 48px;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        
+        .pricing-card .price span {
+            font-size: 16px;
+            color: var(--gray);
+            font-weight: 400;
+        }
+        
+        .pricing-card ul {
+            list-style: none;
+            margin: 30px 0;
+            text-align: left;
+        }
+        
+        .pricing-card li {
+            padding: 8px 0;
+            color: var(--gray);
+        }
+        
+        .pricing-card li::before {
+            content: '✓';
+            color: var(--primary);
+            margin-right: 10px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 60px 40px;
+            background: var(--dark);
+            color: white;
+            text-align: center;
+        }
+        
+        footer a {
+            color: var(--gray);
+            text-decoration: none;
+            margin: 0 15px;
+        }
+        
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 36px; }
+            .features-grid, .pricing-grid { grid-template-columns: 1fr; }
+            nav { padding: 15px 20px; }
+            .nav-links { gap: 15px; }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <h1>🍯 Mehis</h1>
-        <p>Your Private ADHD Coaching Assistant</p>
-    </header>
+    <nav>
+        <a href="index.html" class="logo">Mehis<span>.ai</span></a>
+        <div class="nav-links">
+            <a href="#how">How it works</a>
+            <a href="#pricing">Pricing</a>
+            <a href="#community">Community</a>
+            <a href="login.html">Login</a>
+            <a href="register.html" class="btn btn-primary">Get Started</a>
+        </div>
+    </nav>
+    
     <section class="hero">
-        <p>Parenting a child with ADHD is hard. You don't have to do it alone.</p>
-        <a href="https://t.me/Mehis" class="cta-button">Try Mehis Free on Telegram</a>
+        <h1>Your personal ADHD<br>coaching <span>assistant</span></h1>
+        <p>Get instant, practical advice for parenting children with ADHD. Evidence-based strategies, available 24/7.</p>
+        <div class="hero-buttons">
+            <a href="register.html" class="btn btn-primary">Start Free</a>
+            <a href="#how" class="btn btn-outline">Learn More</a>
+        </div>
     </section>
+    
+    <section class="features" id="how">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🧠</div>
+                <h3>Evidence-Based</h3>
+                <p>Trained on CDC, NICE guidelines and proven parenting strategies from experts.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">⚡</div>
+                <h3>Instant Answers</h3>
+                <p>Get helpful advice whenever you need it. No waiting, no appointments.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>100% Private</h3>
+                <p>Your data stays on your device. No conversations sent to external servers.</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="pricing" id="pricing">
+        <h2>Simple, transparent pricing</h2>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <h3>Free</h3>
+                <div class="price">€0</div>
+                <span>forever</span>
+                <ul>
+                    <li>10 questions/day</li>
+                    <li>Basic strategies</li>
+                    <li>Community access</li>
+                </ul>
+                <a href="register.html" class="btn btn-outline" style="width:100%">Get Started</a>
+            </div>
+            <div class="pricing-card featured">
+                <h3>Premium</h3>
+                <div class="price">€9.99<span>/mo</span></div>
+                <span>per month</span>
+                <ul>
+                    <li>Unlimited questions</li>
+                    <li>Personalized tips</li>
+                    <li>Priority support</li>
+                    <li>Full Discord access</li>
+                </ul>
+                <a href="register.html" class="btn btn-primary" style="width:100%">Go Premium</a>
+            </div>
+            <div class="pricing-card">
+                <h3>Pro</h3>
+                <div class="price">€49<span>/mo</span></div>
+                <span>per month</span>
+                <ul>
+                    <li>Everything in Premium</li>
+                    <li>Multiple children</li>
+                    <li>Client management</li>
+                    <li>Direct messaging</li>
+                </ul>
+                <a href="register.html" class="btn btn-outline" style="width:100%">For Coaches</a>
+            </div>
+        </div>
+    </section>
+    
+    <footer>
+        <p>🍯 Mehis - Your ADHD Coaching Assistant</p>
+        <div style="margin-top: 20px;">
+            <a href="privacy.html">Privacy</a>
+            <a href="support.html">Support</a>
+            <a href="#">Terms</a>
+        </div>
+    </footer>
 </body>
 </html>
