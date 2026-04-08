@@ -179,3 +179,26 @@
     </script>
 </body>
 </html>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault()
+            
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+            const name = document.getElementById('name').value
+            
+            const btn = this.querySelector('.btn')
+            btn.textContent = 'Creating account...'
+            
+            const result = await registerUser(email, password, name)
+            
+            if (result.success) {
+                alert('Account created! Please check your email to verify, then login.')
+                window.location.href = 'login.html'
+            } else {
+                alert('Error: ' + result.error)
+                btn.textContent = 'Create Account'
+            }
+        })
+    </script>

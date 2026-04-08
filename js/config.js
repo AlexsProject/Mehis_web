@@ -1,0 +1,3 @@
+// Supabase Configuration - DO NOT SHARE
+const SUPABASE_URL = 'https://etgaxhkizapqzzxdttrn.supabase.co'
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Z2F4aGtpemFwcXp6eGR0dHJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzMzOTQsImV4cCI6MjA5MTI0OTM5NH0.XlgKhu0wAo1570kgexl5a9gnhD-x0e_eOs7O_ucK640'

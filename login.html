@@ -195,3 +195,25 @@
     </script>
 </body>
 </html>
+    <script src="js/auth.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault()
+            
+            const email = document.getElementById('email').value
+            const password = document.getElementById('password').value
+            
+            const btn = this.querySelector('.btn')
+            btn.textContent = 'Logging in...'
+            
+            const result = await loginUser(email, password)
+            
+            if (result.success) {
+                saveUser(result.session)
+                window.location.href = 'dashboard.html'
+            } else {
+                alert('Error: ' + result.error)
+                btn.textContent = 'Sign In'
+            }
+        })
+    </script>
