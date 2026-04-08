@@ -10,26 +10,21 @@
         body { background: #F5F5DC; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .register-container { background: white; padding: 50px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 100%; max-width: 420px; }
         .logo { text-align: center; font-size: 28px; font-weight: 800; color: #2C3E50; margin-bottom: 10px; text-decoration: none; }
-        .logo span { color: #2C3E50; }
         h1 { text-align: center; font-size: 24px; margin-bottom: 8px; }
         p.subtitle { text-align: center; color: #666; margin-bottom: 30px; }
         .form-group { margin-bottom: 20px; }
         label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 14px; }
         input { width: 100%; padding: 14px 16px; border: 2px solid #ddd; border-radius: 10px; font-size: 16px; background: #F5F5DC; }
-        input:focus { outline: none; border-color: #2C3E50; }
         .btn { width: 100%; padding: 16px; background: #2C3E50; color: #F5F5DC; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; }
-        .btn:hover { background: #3D5A80; }
-        .terms { font-size: 13px; color: #666; margin-top: 15px; text-align: center; }
-        .terms a { color: #2C3E50; text-decoration: none; }
         .signup-link { text-align: center; margin-top: 25px; color: #666; }
         .signup-link a { color: #2C3E50; text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>
     <div class="register-container">
-        <a href="index.html" class="logo">Mehis<span>.ai</span></a>
+        <a href="index.html" class="logo">Mehis</a>
         <h1>Create your account</h1>
-        <p class="subtitle">Start getting better ADHD parenting advice today</p>
+        <p class="subtitle">Start getting better ADHD parenting advice</p>
         
         <form id="registerForm">
             <div class="form-group">
@@ -47,7 +42,6 @@
             <button type="submit" class="btn">Create Account</button>
         </form>
         
-        <p class="terms">By signing up, you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a></p>
         <p class="signup-link">Already have an account? <a href="login.html">Sign in</a></p>
     </div>
 
@@ -57,16 +51,15 @@
 
     document.getElementById('registerForm').addEventListener('submit', async function(e) {
         e.preventDefault()
+        const btn = this.querySelector('.btn')
+        btn.textContent = 'Creating...'
         
         const email = document.getElementById('email').value
         const password = document.getElementById('password').value
         const fullName = document.getElementById('full_name').value
-        const btn = this.querySelector('.btn')
-        
-        btn.textContent = 'Creating account...'
         
         try {
-            // Register with Supabase Auth
+            // Sign up user
             const authResp = await fetch(`${SUPABASE_URL}/auth/v1/signup`, {
                 method: 'POST',
                 headers: { 'apikey': SUPABASE_ANON_KEY, 'Content-Type': 'application/json' },
@@ -74,27 +67,37 @@
             })
             
             const authData = await authResp.json()
+            console.log('Auth response:', authData)
             
-            if (authData.error || !authData.user) {
+            if (authData.error) {
                 alert('Error: ' + authData.error.message)
                 btn.textContent = 'Create Account'
                 return
             }
             
-            // Add to users table
-            const userResp = await fetch(`${SUPABASE_URL}/rest/v1/users`, {
+            // If no session, user needs to verify email
+            if (!authData.session) {
+                alert('✅ Account created! \n\nPlease check your email and click the verification link, then come back to login.')
+                window.location.href = 'login.html'
+                return
+            }
+            
+            // If we have session, add to users table
+            const token = authData.session.access_token
+            
+            await fetch(`${SUPABASE_URL}/rest/v1/users`, {
                 method: 'POST',
                 headers: { 
                     'apikey': SUPABASE_ANON_KEY, 
-                    'Authorization': `Bearer ${authData.session ? authData.session.access_token : authData.access_token}`,
+                    'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
                     'Prefer': 'return=minimal'
                 },
                 body: JSON.stringify({ id: authData.user.id, email: email, full_name: fullName, tier: 'free' })
             })
             
-            alert('Account created! Check your email to verify, then login.')
-            window.location.href = "login.html?utm=verified"
+            alert('Welcome to Mehis! 🎉')
+            window.location.href = 'dashboard.html'
             
         } catch(err) {
             alert('Error: ' + err.message)
