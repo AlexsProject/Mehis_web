@@ -24,7 +24,6 @@
         .tier-badge { background: #FFD700; color: #333; padding: 5px 15px; border-radius: 20px; font-size: 14px; }
         .tier-free { background: #e0e0e0; }
         .tier-premium { background: #FFD700; }
-        .tier-family { background: #9b59b6; color: white; }
         
         .usage-bar { background: #e0e0e0; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
         .usage-fill { background: var(--primary); height: 100%; border-radius: 10px; }
@@ -68,7 +67,7 @@
         <div class="card">
             <h2>👥 Community</h2>
             <p>Join other ADHD parents, get tips and support!</p>
-            <a href="https://discord.gg/discord.gg/placeholder" target="_blank" class="btn btn-discord">
+            <a href="https://discord.gg/YOUR_SERVER_LINK" target="_blank" class="btn btn-discord">
                 💬 Join Discord
             </a>
         </div>
@@ -80,14 +79,30 @@
     </div>
     
     <script>
+    // Handle OAuth token in URL (for Discord login)
+    function handleOAuthToken() {
+        const hash = window.location.hash
+        if (hash && hash.includes('access_token')) {
+            const params = new URLSearchParams(hash.substring(1))
+            const token = params.get('access_token')
+            if (token) {
+                localStorage.setItem('mehis_token', token)
+                // Clear hash so it doesn't show in URL
+                window.history.replaceState(null, null, ' ')
+            }
+        }
+    }
+    
+    handleOAuthToken()
+    
     // Check login
     const token = localStorage.getItem('mehis_token')
     if (!token) {
         location.href = 'login.html'
     }
     
-    // Simple user data (for now - will connect to real data later)
-    document.getElementById('userEmail').textContent = 'user@example.com'
+    // Show user email (placeholder for now)
+    document.getElementById('userEmail').textContent = 'Logged in via Discord'
     
     function logout() {
         localStorage.removeItem('mehis_token')
