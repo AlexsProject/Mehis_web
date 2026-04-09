@@ -12,9 +12,9 @@
         h1 { color: var(--primary); }
         h2 { color: var(--primary); font-size: 20px; margin-bottom: 15px; }
         
-        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; }
+        .btn { padding: 14px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
         .btn-primary { background: var(--primary); color: var(--bg); }
-        .btn-discord { background: #5865F2; color: white; }
+        .btn-discord { background: #5865F2; color: white; font-size: 16px; }
         .btn-logout { background: #c0392b; color: white; }
         
         .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
@@ -22,13 +22,12 @@
         .info-value { font-weight: 600; color: var(--primary); }
         
         .tier-badge { background: #FFD700; color: #333; padding: 5px 15px; border-radius: 20px; font-size: 14px; }
-        .tier-free { background: #e0e0e0; }
-        .tier-premium { background: #FFD700; }
-        
-        .usage-bar { background: #e0e0e0; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
-        .usage-fill { background: var(--primary); height: 100%; border-radius: 10px; }
         
         .questions-left { font-size: 24px; font-weight: bold; color: var(--primary); }
+        
+        .hero-card { background: linear-gradient(135deg, #5865F2, #2C3E50); color: white; text-align: center; }
+        .hero-card h2 { color: white; }
+        .hero-card p { color: #ddd; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -56,19 +55,16 @@
             <div class="questions-left">
                 <span id="questionsLeft">0</span> / 10
             </div>
-            <div class="usage-bar">
-                <div class="usage-fill" style="width: 0%" id="usageBar"></div>
-            </div>
             <p style="color: #666; font-size: 14px;">Free users get 10 questions per day</p>
             <a href="https://t.me/Mehis" target="_blank" class="btn btn-primary">💬 Open Telegram Bot</a>
         </div>
         
-        <!-- Community -->
-        <div class="card">
-            <h2>👥 Community</h2>
-            <p>Join other ADHD parents, get tips and support!</p>
+        <!-- Discord Community - HERO section! -->
+        <div class="card hero-card">
+            <h2>👥 Join Our Community</h2>
+            <p>Connect with other ADHD parents, get tips, and support from people who understand!</p>
             <a href="https://discord.gg/YOUR_SERVER_LINK" target="_blank" class="btn btn-discord">
-                💬 Join Discord
+                💬 Join Discord Community
             </a>
         </div>
         
@@ -87,7 +83,6 @@
             const token = params.get('access_token')
             if (token) {
                 localStorage.setItem('mehis_token', token)
-                // Clear hash so it doesn't show in URL
                 window.history.replaceState(null, null, ' ')
             }
         }
@@ -101,7 +96,7 @@
         location.href = 'login.html'
     }
     
-    // Show user email (placeholder for now)
+    // Show user info
     document.getElementById('userEmail').textContent = 'Logged in via Discord'
     
     function logout() {
