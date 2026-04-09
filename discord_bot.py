@@ -2,7 +2,7 @@ import requests
 from discord import Intents, Message
 from discord.ext import commands
 
-DISCORD_BOT_TOKEN = "MTQ5MTc1MTg2MDY0MDU1MDkxMg.G_aM_k.DLTEuBrgaHbBF3xiDeV8KIfKgGDxlNsWWPYS5I"
+DISCORD_BOT_TOKEN = "token"
 OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL_NAME = "mehis"
 
