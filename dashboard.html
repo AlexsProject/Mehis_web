@@ -4,34 +4,91 @@
     <meta charset="UTF-8">
     <title>Dashboard - Mehis</title>
     <style>
-        body { background: #F5F5DC; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
-        .box { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 600px; margin: 0 auto; }
-        h1 { color: #2C3E50; }
-        .card { background: #F5F5DC; padding: 20px; border-radius: 10px; margin: 15px 0; }
-        .btn { background: #2C3E50; color: #F5F5DC; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; text-decoration: none; display: inline-block; }
+        :root { --primary: #2C3E50; --bg: #F5F5DC; }
+        body { background: var(--bg); font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .card { background: white; padding: 25px; border-radius: 16px; margin: 20px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); }
+        h2 { color: var(--primary); font-size: 20px; margin-bottom: 15px; }
+        
+        .btn { padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; text-decoration: none; display: inline-block; }
+        .btn-primary { background: var(--primary); color: var(--bg); }
+        .btn-discord { background: #5865F2; color: white; }
+        .btn-logout { background: #c0392b; color: white; }
+        
+        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
+        .info-label { color: #666; }
+        .info-value { font-weight: 600; color: var(--primary); }
+        
+        .tier-badge { background: #FFD700; color: #333; padding: 5px 15px; border-radius: 20px; font-size: 14px; }
+        .tier-free { background: #e0e0e0; }
+        .tier-premium { background: #FFD700; }
+        .tier-family { background: #9b59b6; color: white; }
+        
+        .usage-bar { background: #e0e0e0; height: 20px; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .usage-fill { background: var(--primary); height: 100%; border-radius: 10px; }
+        
+        .questions-left { font-size: 24px; font-weight: bold; color: var(--primary); }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1>🍯 Welcome to Mehis!</h1>
-        
+    <div class="container">
         <div class="card">
-            <h3>Your Account</h3>
-            <p><strong>Tier:</strong> Free</p>
-            <p><strong>Questions today:</strong> 0 / 10</p>
+            <h1>🍯 Mehis Dashboard</h1>
         </div>
         
+        <!-- Account -->
         <div class="card">
-            <h3>Start Using Mehis</h3>
-            <p>Go to Telegram and message <strong>@Mehis</strong></p>
-            <p>Use code: <strong>LOGGEDIN</strong></p>
+            <h2>📧 Your Account</h2>
+            <div class="info-row">
+                <span class="info-label">Email</span>
+                <span class="info-value" id="userEmail">Loading...</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Plan</span>
+                <span class="tier-badge" id="userTier">Free</span>
+            </div>
         </div>
         
-        <a href="index.html" class="btn">Home</a>
-        <button onclick="logout()" class="btn" style="background:#c0392b">Logout</button>
+        <!-- Usage -->
+        <div class="card">
+            <h2>📊 Questions Today</h2>
+            <div class="questions-left">
+                <span id="questionsLeft">0</span> / 10
+            </div>
+            <div class="usage-bar">
+                <div class="usage-fill" style="width: 0%" id="usageBar"></div>
+            </div>
+            <p style="color: #666; font-size: 14px;">Free users get 10 questions per day</p>
+            <a href="https://t.me/Mehis" target="_blank" class="btn btn-primary">💬 Open Telegram Bot</a>
+        </div>
+        
+        <!-- Community -->
+        <div class="card">
+            <h2>👥 Community</h2>
+            <p>Join other ADHD parents, get tips and support!</p>
+            <a href="https://discord.gg/discord.gg/placeholder" target="_blank" class="btn btn-discord">
+                💬 Join Discord
+            </a>
+        </div>
+        
+        <!-- Logout -->
+        <div style="text-align: center; margin-top: 30px;">
+            <button onclick="logout()" class="btn btn-logout">Logout</button>
+        </div>
     </div>
     
     <script>
+    // Check login
+    const token = localStorage.getItem('mehis_token')
+    if (!token) {
+        location.href = 'login.html'
+    }
+    
+    // Simple user data (for now - will connect to real data later)
+    document.getElementById('userEmail').textContent = 'user@example.com'
+    
     function logout() {
         localStorage.removeItem('mehis_token')
         location.href = 'login.html'
