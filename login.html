@@ -8,18 +8,30 @@
         .box { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 350px; }
         h1 { color: #2C3E50; text-align: center; }
         input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; background: #F5F5DC; }
-        .btn { width: 100%; padding: 14px; background: #2C3E50; color: #F5F5DC; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin: 5px 0; }
+        .btn-email { background: #2C3E50; color: #F5F5DC; }
+        .btn-discord { background: #5865F2; color: white; }
         .link { display: block; text-align: center; margin-top: 15px; color: #2C3E50; }
     </style>
 </head>
 <body>
     <div class="box">
         <h1>Mehis - Login</h1>
+        
+        <!-- Discord Login -->
+        <a href="https://etgaxhkizapqzzxdttrn.supabase.co/auth/v1/authorize?provider=discord&redirect_to=https://alexsproject.github.io/Mehis_web/dashboard.html" class="btn btn-discord">
+            💬 Login with Discord
+        </a>
+        
+        <p style="text-align:center; color:#666; margin:15px 0;">or</p>
+        
+        <!-- Email Login -->
         <form id="form">
             <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="pass" placeholder="Password" required>
-            <button class="btn" type="submit">Sign In</button>
+            <button type="submit" class="btn btn-email">Email Login</button>
         </form>
+        
         <a href="register.html" class="link">Create account</a>
     </div>
 
@@ -42,13 +54,11 @@
         })
         
         const data = await res.json()
-        console.log(data)
         
         if (data.error) {
             alert('Error: ' + (data.error_description || data.error))
-            btn.textContent = 'Sign In'
+            btn.textContent = 'Email Login'
         } else {
-            alert('OK! Logged in!')
             localStorage.setItem('mehis_token', data.access_token)
             location.href = 'dashboard.html'
         }
