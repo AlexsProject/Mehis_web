@@ -19,7 +19,7 @@
         <h1>Mehis - Login</h1>
         
         <!-- Discord Login -->
-        <a href="https://etgaxhkizapqzzxdttrn.supabase.co/auth/v1/authorize?provider=discord&redirect_to=https://alexsproject.github.io/Mehis_web/dashboard.html" class="btn btn-discord">
+        <a href="https://etgaxhkizapqzzxdttrn.supabase.co/auth/v1/authorize?provider=discord&redirect_to=https://alexsproject.github.io/Mehis_web/login.html" class="btn btn-discord">
             💬 Login with Discord
         </a>
         
@@ -38,6 +38,22 @@
     <script>
     const URL = 'https://etgaxhkizapqzzxdttrn.supabase.co'
     const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Z2F4aGtpemFwcXp6eGR0dHJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzMzOTQsImV4cCI6MjA5MTI0OTM5NH0.XlgKhu0wAo1570kgexl5a9gnhD-x0e_eOs7O_ucK640'
+
+    // Check for OAuth token in URL hash
+    function handleOAuthCallback() {
+        const hash = window.location.hash
+        if (hash.includes('access_token')) {
+            const params = new URLSearchParams(hash.substring(1))
+            const token = params.get('access_token')
+            if (token) {
+                localStorage.setItem('mehis_token', token)
+                window.location.href = 'dashboard.html'
+            }
+        }
+    }
+    
+    // Run on page load
+    handleOAuthCallback()
 
     document.getElementById('form').onsubmit = async e => {
         e.preventDefault()
