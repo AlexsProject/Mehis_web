@@ -39,20 +39,28 @@
     const URL = 'https://etgaxhkizapqzzxdttrn.supabase.co'
     const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Z2F4aGtpemFwcXp6eGR0dHJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzMzOTQsImV4cCI6MjA5MTI0OTM5NH0.XlgKhu0wAo1570kgexl5a9gnhD-x0e_eOs7O_ucK640'
 
-    // Check for OAuth token in URL hash
+    // If already logged in, go to dashboard
+    if (localStorage.getItem('mehis_token')) {
+        location.href = 'dashboard.html'
+    }
+
+    // Handle OAuth callback - check URL hash for token
     function handleOAuthCallback() {
         const hash = window.location.hash
-        if (hash.includes('access_token')) {
+        console.log('Hash:', hash)
+        if (hash && hash.includes('access_token')) {
             const params = new URLSearchParams(hash.substring(1))
             const token = params.get('access_token')
+            console.log('Token found:', token ? 'yes' : 'no')
             if (token) {
                 localStorage.setItem('mehis_token', token)
-                window.location.href = 'dashboard.html'
+                // Clear hash and go to dashboard
+                window.location.hash = ''
+                location.href = 'dashboard.html'
             }
         }
     }
     
-    // Run on page load
     handleOAuthCallback()
 
     document.getElementById('form').onsubmit = async e => {
