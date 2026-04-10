@@ -6,89 +6,97 @@
     <style>
         :root { --primary: #2C3E50; --bg: #F5F5DC; }
         body { background: var(--bg); font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; }
         
-        .card { background: white; padding: 25px; border-radius: 16px; margin: 20px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        h1 { color: var(--primary); margin: 0 0 20px 0; }
-        h2 { color: var(--primary); font-size: 20px; margin-bottom: 15px; }
+        .container { display: flex; gap: 20px; max-width: 1200px; margin: 0 auto; }
+        .left-col { width: 40%; }
+        .right-col { width: 60%; }
         
-        .btn { padding: 14px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+        .card { background: white; padding: 20px; border-radius: 16px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: var(--primary); margin: 0 0 15px 0; font-size: 28px; }
+        h2 { color: var(--primary); font-size: 16px; margin-bottom: 10px; }
+        
+        .btn { padding: 12px 20px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
         .btn-primary { background: var(--primary); color: var(--bg); }
         .btn-discord { background: #5865F2; color: white; }
         .btn-logout { background: #c0392b; color: white; }
         
-        .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
-        .info-label { color: #666; }
-        .info-value { font-weight: 600; color: var(--primary); }
+        .info-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee; }
+        .info-label { color: #666; font-size: 14px; }
+        .info-value { font-weight: 600; color: var(--primary); font-size: 14px; }
         
-        .tier-badge { background: #FFD700; color: #333; padding: 5px 15px; border-radius: 20px; font-size: 14px; }
+        .tier-badge { background: #FFD700; color: #333; padding: 3px 12px; border-radius: 20px; font-size: 12px; }
         
-        .questions-left { font-size: 24px; font-weight: bold; color: var(--primary); }
+        .questions-left { font-size: 20px; font-weight: bold; color: var(--primary); }
         
         /* Chat styles */
-        .chat-container { background: white; border-radius: 16px; padding: 20px; margin: 20px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        .chat-messages { height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
-        .chat-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .chat-container { background: white; border-radius: 16px; padding: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); height: calc(100vh - 100px); display: flex; flex-direction: column; }
+        .chat-messages { flex: 1; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 15px; margin-bottom: 15px; }
+        .chat-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
         .message { padding: 10px; margin: 5px 0; border-radius: 8px; }
         .message-user { background: #e0f0ff; margin-left: 20%; }
         .message-mehis { background: #f0f0f0; margin-right: 20%; }
         .typing { color: #666; font-style: italic; }
         
-        .hero-card { background: linear-gradient(135deg, #5865F2, #2C3E50); color: white; text-align: center; }
+        .hero-card { background: linear-gradient(135deg, #5865F2, #2C3E50); color: white; }
         .hero-card h2 { color: white; }
-        .hero-card p { color: #ddd; margin-bottom: 20px; }
+        .hero-card p { color: #ddd; font-size: 14px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="card">
-            <h1>🍯 Mehis Dashboard</h1>
-        </div>
-        
-        <!-- Account -->
-        <div class="card">
-            <h2>📧 Your Account</h2>
-            <div class="info-row">
-                <span class="info-label">Email</span>
-                <span class="info-value" id="userEmail">Loading...</span>
+        <!-- Left column (40%) - Account, Questions, Community -->
+        <div class="left-col">
+            <div class="card">
+                <h1>🍯 Mehis Dashboard</h1>
             </div>
-            <div class="info-row">
-                <span class="info-label">Plan</span>
-                <span class="tier-badge" id="userTier">Free</span>
+            
+            <!-- Account -->
+            <div class="card">
+                <h2>📧 Your Account</h2>
+                <div class="info-row">
+                    <span class="info-label">Email</span>
+                    <span class="info-value" id="userEmail">Loading...</span>
+                </div>
+                <div class="info-row">
+                    <span class="info-label">Plan</span>
+                    <span class="tier-badge" id="userTier">Free</span>
+                </div>
+            </div>
+            
+            <!-- Questions -->
+            <div class="card">
+                <h2>📊 Questions Today</h2>
+                <div class="questions-left">
+                    <span id="questionsLeft">0</span> / 10
+                </div>
+                <p style="color: #666; font-size: 12px;">Free users get 10 questions per day</p>
+            </div>
+            
+            <!-- Community -->
+            <div class="card hero-card">
+                <h2>👥 Join Our Community</h2>
+                <p>Connect with other ADHD parents!</p>
+                <a href="https://discord.gg/necv75Yxzg" target="_blank" class="btn btn-discord">
+                    💬 Join Discord
+                </a>
+            </div>
+            
+            <!-- Logout -->
+            <div style="text-align: center;">
+                <button onclick="logout()" class="btn btn-logout">Logout</button>
             </div>
         </div>
         
-        <!-- Questions -->
-        <div class="card">
-            <h2>📊 Questions Today</h2>
-            <div class="questions-left">
-                <span id="questionsLeft">0</span> / 10
+        <!-- Right column (60%) - Chat -->
+        <div class="right-col">
+            <div class="chat-container">
+                <h2>💬 Chat with Mehis</h2>
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message message-mehis">👋 Hi! I'm Mehis, your ADHD coaching assistant. Ask me anything!</div>
+                </div>
+                <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+                <button class="btn btn-primary" style="margin-top: 10px;" onclick="sendMessage()">Send</button>
             </div>
-            <p style="color: #666; font-size: 14px;">Free users get 10 questions per day</p>
-        </div>
-        
-        <!-- Chat with Mehis -->
-        <div class="chat-container">
-            <h2>💬 Chat with Mehis</h2>
-            <div class="chat-messages" id="chatMessages">
-                <div class="message message-mehis">👋 Hi! I'm Mehis, your ADHD coaching assistant. Ask me anything!</div>
-            </div>
-            <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
-            <button class="btn btn-primary" style="margin-top: 10px;" onclick="sendMessage()">Send</button>
-        </div>
-        
-        <!-- Community -->
-        <div class="card hero-card">
-            <h2>👥 Join Our Community</h2>
-            <p>Connect with other ADHD parents!</p>
-            <a href="https://discord.gg/necv75Yxzg" target="_blank" class="btn btn-discord">
-                💬 Join Discord
-            </a>
-        </div>
-        
-        <!-- Logout -->
-        <div style="text-align: center; margin-top: 30px;">
-            <button onclick="logout()" class="btn btn-logout">Logout</button>
         </div>
     </div>
     
@@ -147,11 +155,11 @@
                 const data = await response.json()
                 addMessage(data.response || "I'm thinking...", false)
             } else {
-                addMessage("Error: Make sure Ollama is running on your computer!", false)
+                addMessage("Error: Make sure Ollama is running!", false)
             }
         } catch (e) {
             hideTyping()
-            addMessage("Error: Cannot connect to Ollama. Make sure it's running on localhost:11434", false)
+            addMessage("Error: Cannot connect to Ollama on localhost:11434", false)
         }
     }
     
