@@ -9,12 +9,12 @@
         .container { max-width: 600px; margin: 0 auto; }
         
         .card { background: white; padding: 25px; border-radius: 16px; margin: 20px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        h1 { color: var(--primary); }
+        h1 { color: var(--primary); margin: 0 0 20px 0; }
         h2 { color: var(--primary); font-size: 20px; margin-bottom: 15px; }
         
         .btn { padding: 14px 24px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
         .btn-primary { background: var(--primary); color: var(--bg); }
-        .btn-discord { background: #5865F2; color: white; font-size: 16px; }
+        .btn-discord { background: #5865F2; color: white; }
         .btn-logout { background: #c0392b; color: white; }
         
         .info-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #eee; }
@@ -24,6 +24,15 @@
         .tier-badge { background: #FFD700; color: #333; padding: 5px 15px; border-radius: 20px; font-size: 14px; }
         
         .questions-left { font-size: 24px; font-weight: bold; color: var(--primary); }
+        
+        /* Chat styles */
+        .chat-container { background: white; border-radius: 16px; padding: 20px; margin: 20px 0; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .chat-messages { height: 300px; overflow-y: auto; border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px; }
+        .chat-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+        .message { padding: 10px; margin: 5px 0; border-radius: 8px; }
+        .message-user { background: #e0f0ff; margin-left: 20%; }
+        .message-mehis { background: #f0f0f0; margin-right: 20%; }
+        .typing { color: #666; font-style: italic; }
         
         .hero-card { background: linear-gradient(135deg, #5865F2, #2C3E50); color: white; text-align: center; }
         .hero-card h2 { color: white; }
@@ -49,22 +58,31 @@
             </div>
         </div>
         
-        <!-- Usage -->
+        <!-- Questions -->
         <div class="card">
             <h2>📊 Questions Today</h2>
             <div class="questions-left">
                 <span id="questionsLeft">0</span> / 10
             </div>
             <p style="color: #666; font-size: 14px;">Free users get 10 questions per day</p>
-            <a href="https://t.me/Mehis" target="_blank" class="btn btn-primary">💬 Open Telegram Bot</a>
         </div>
         
-        <!-- Discord Community - HERO section! -->
+        <!-- Chat with Mehis -->
+        <div class="chat-container">
+            <h2>💬 Chat with Mehis</h2>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message message-mehis">👋 Hi! I'm Mehis, your ADHD coaching assistant. Ask me anything!</div>
+            </div>
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="handleKeyPress(event)">
+            <button class="btn btn-primary" style="margin-top: 10px;" onclick="sendMessage()">Send</button>
+        </div>
+        
+        <!-- Community -->
         <div class="card hero-card">
             <h2>👥 Join Our Community</h2>
-            <p>Connect with other ADHD parents, get tips, and support from people who understand!</p>
+            <p>Connect with other ADHD parents!</p>
             <a href="https://discord.gg/necv75Yxzg" target="_blank" class="btn btn-discord">
-                💬 Join Discord Community
+                💬 Join Discord
             </a>
         </div>
         
@@ -75,29 +93,67 @@
     </div>
     
     <script>
-    // Handle OAuth token in URL (for Discord login)
-    function handleOAuthToken() {
-        const hash = window.location.hash
-        if (hash && hash.includes('access_token')) {
-            const params = new URLSearchParams(hash.substring(1))
-            const token = params.get('access_token')
-            if (token) {
-                localStorage.setItem('mehis_token', token)
-                window.history.replaceState(null, null, ' ')
+    const token = localStorage.getItem('mehis_token')
+    if (!token) location.href = 'login.html'
+    
+    document.getElementById('userEmail').textContent = 'Logged in'
+    
+    const OLLAMA_URL = "http://localhost:11434/api/generate"
+    const MODEL_NAME = "mehis"
+    const SYSTEM_PROMPT = "You are Mehis, a helpful ADHD coaching assistant for parents. Keep responses concise and supportive."
+    
+    function handleKeyPress(e) { if (e.key === 'Enter') sendMessage() }
+    
+    function addMessage(text, isUser) {
+        const div = document.createElement('div')
+        div.className = 'message ' + (isUser ? 'message-user' : 'message-mehis')
+        div.textContent = text
+        document.getElementById('chatMessages').appendChild(div)
+        document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight
+    }
+    
+    function showTyping() {
+        const div = document.createElement('div')
+        div.className = 'message message-mehis typing'
+        div.textContent = '🤔 Thinking...'
+        div.id = 'typingMsg'
+        document.getElementById('chatMessages').appendChild(div)
+    }
+    
+    function hideTyping() {
+        const typing = document.getElementById('typingMsg')
+        if (typing) typing.remove()
+    }
+    
+    async function sendMessage() {
+        const input = document.getElementById('chatInput')
+        const message = input.value.trim()
+        if (!message) return
+        
+        addMessage(message, true)
+        input.value = ''
+        showTyping()
+        
+        try {
+            const response = await fetch(OLLAMA_URL, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({model: MODEL_NAME, prompt: SYSTEM_PROMPT + "\n\nUser: " + message + "\nMehis:", stream: false})
+            })
+            
+            hideTyping()
+            
+            if (response.ok) {
+                const data = await response.json()
+                addMessage(data.response || "I'm thinking...", false)
+            } else {
+                addMessage("Error: Make sure Ollama is running on your computer!", false)
             }
+        } catch (e) {
+            hideTyping()
+            addMessage("Error: Cannot connect to Ollama. Make sure it's running on localhost:11434", false)
         }
     }
-    
-    handleOAuthToken()
-    
-    // Check login
-    const token = localStorage.getItem('mehis_token')
-    if (!token) {
-        location.href = 'login.html'
-    }
-    
-    // Show user info
-    document.getElementById('userEmail').textContent = 'Logged in via Discord'
     
     function logout() {
         localStorage.removeItem('mehis_token')
