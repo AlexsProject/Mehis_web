@@ -7,24 +7,43 @@
         body { background: #F5F5DC; font-family: -apple-system, sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
         .box { background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); width: 350px; }
         h1 { color: #2C3E50; text-align: center; }
-        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; background: #F5F5DC; }
-        .btn { width: 100%; padding: 14px; background: #2C3E50; color: #F5F5DC; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 2px solid #ddd; border-radius: 8px; background: #F5F5DC; box-sizing: border-box; }
+        .btn { width: 100%; padding: 14px; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin: 5px 0; display: block; text-align: center; text-decoration: none; box-sizing: border-box; }
+        .btn-email { background: #2C3E50; color: #F5F5DC; }
+        .btn-discord { background: #5865F2; color: #F5F5DC; }
+        .link { display: block; text-align: center; margin-top: 15px; color: #2C3E50; }
+        .divider { text-align: center; color: #666; margin: 15px 0; }
     </style>
 </head>
 <body>
     <div class="box">
-        <h1>Mehis - Register</h1>
+        <h1>Create Account</h1>
+        <p class="subtitle" style="color:#666;text-align:center;margin-bottom:20px;">Join Mehis ADHD Coaching</p>
+        
         <form id="form">
             <input type="text" id="name" placeholder="Full Name" required>
             <input type="email" id="email" placeholder="Email" required>
             <input type="password" id="pass" placeholder="Password" required minlength="8">
-            <button class="btn" type="submit">Create Account</button>
+            <button class="btn btn-email" type="submit">Sign Up with Email</button>
         </form>
+        
+        <div class="divider">or</div>
+        
+        <a href="https://etgaxhkizapqzzxdttrn.supabase.co/auth/v1/authorize?provider=discord&redirect_to=https://alexsproject.github.io/Mehis_web/callback.html" class="btn btn-discord">
+            💬 Sign up with Discord
+        </a>
+        
+        <a href="login.html" class="link">Already have an account? Login</a>
     </div>
 
     <script>
     const URL = 'https://etgaxhkizapqzzxdttrn.supabase.co'
     const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Z2F4aGtpemFwcXp6eGR0dHJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzMzOTQsImV4cCI6MjA5MTI0OTM5NH0.XlgKhu0wAo1570kgexl5a9gnhD-x0e_eOs7O_ucK640'
+
+    // If already logged in, go to dashboard
+    if (localStorage.getItem('mehis_token')) {
+        location.href = 'dashboard.html'
+    }
 
     document.getElementById('form').onsubmit = async e => {
         e.preventDefault()
@@ -45,8 +64,13 @@
         const data = await res.json()
         console.log(data)
         
-        alert('✅ Done! Try logging in now.')
-        location.href = 'login.html'
+        if (data.error) {
+            alert('Error: ' + (data.error_description || data.error))
+            btn.textContent = 'Sign Up with Email'
+        } else {
+            alert('✅ Done! Try logging in now.')
+            location.href = 'login.html'
+        }
     }
     </script>
 </body>
