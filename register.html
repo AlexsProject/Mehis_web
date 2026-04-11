@@ -227,8 +227,17 @@
         document.querySelector('.toggle-container').style.display = 'none'
         document.getElementById('signup-form').classList.add('visible')
         
+        // Banner
         document.getElementById('banner').style.display = 'none'
         document.getElementById('submit-btn').textContent = 'Create Free Account'
+        
+        // Add social login links
+        const params = new URLSearchParams(window.location.search)
+        const plan = params.get('plan')
+        const billing = params.get('billing')
+        if (plan && plan !== 'free') {
+            localStorage.setItem('pending_plan', JSON.stringify({ plan, billing }))
+        }
     }
     
     function showPlans() {
