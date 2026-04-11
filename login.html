@@ -49,6 +49,7 @@
 
     // Handle OAuth callback
     function handleOAuthCallback() {
+        // Check hash for access_token
         const hash = window.location.hash
         if (hash && hash.includes('access_token')) {
             const params = new URLSearchParams(hash.substring(1))
@@ -57,7 +58,21 @@
                 localStorage.setItem('mehis_token', token)
                 window.location.hash = ''
                 location.href = 'dashboard.html'
+                return
             }
+        }
+        
+        // Also check URL params (newer Supabase)
+        const urlParams = new URLSearchParams(window.location.search)
+        const code = urlParams.get('code')
+        if (code) {
+            // Exchange code for session
+            fetch(URL + '/auth/v1/authorize?provider=discord', {
+                method: 'POST',
+                headers: { 'apikey': KEY, 'Content-Type': 'application/json' }
+            }).then(() => {
+                location.href = 'dashboard.html'
+            })
         }
     }
     
