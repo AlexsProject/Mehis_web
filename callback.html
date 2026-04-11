@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loading... - Mehis</title>
+    <script>
+    const URL = 'https://etgaxhkizapqzzxdttrn.supabase.co'
+    const KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Z2F4aGtpemFwcXp6eGR0dHJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2NzMzOTQsImV4cCI6MjA5MTI0OTM5NH0.XlgKhu0wAo1570kgexl5a9gnhD-x0e_eOs7O_ucK640'
+
+    // Get token from URL hash
+    const hash = window.location.hash.substring(1)
+    const params = new URLSearchParams(hash)
+    const accessToken = params.get('access_token')
+    const refreshToken = params.get('refresh_token')
+    const expiresIn = params.get('expires_in')
+    const tokenType = params.get('token_type')
+    
+    if (accessToken) {
+        localStorage.setItem('mehis_token', accessToken)
+        if (refreshToken) localStorage.setItem('mehis_refresh', refreshToken)
+        window.location.href = 'dashboard.html'
+    } else {
+        // Check for error
+        const error = params.get('error_description') || params.get('error')
+        if (error) {
+            alert('Login error: ' + error)
+        }
+        window.location.href = 'login.html'
+    }
+    </script>
+</head>
+<body>
+    <p>Loading...</p>
+</body>
+</html>
