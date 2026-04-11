@@ -49,30 +49,47 @@
 
     // Handle OAuth callback
     function handleOAuthCallback() {
-        // Check hash for access_token
-        const hash = window.location.hash
+        // Check hash for access_token (old Supabase)
+        let hash = window.location.hash
         if (hash && hash.includes('access_token')) {
             const params = new URLSearchParams(hash.substring(1))
             const token = params.get('access_token')
+            const expiresIn = params.get('expires_in')
+            const refreshToken = params.get('refresh_token')
             if (token) {
                 localStorage.setItem('mehis_token', token)
+                if (refreshToken) localStorage.setItem('mehis_refresh', refreshToken)
                 window.location.hash = ''
                 location.href = 'dashboard.html'
                 return
             }
         }
         
-        // Also check URL params (newer Supabase)
+        // Check for error in hash
+        if (hash && hash.includes('error')) {
+            const params = new URLSearchParams(hash.substring(1))
+            const error = params.get('error_description') || params.get('error')
+            alert('Login error: ' + error)
+            return
+        }
+        
+        // Check URL params for code (newer Supabase)
         const urlParams = new URLSearchParams(window.location.search)
         const code = urlParams.get('code')
         if (code) {
             // Exchange code for session
-            fetch(URL + '/auth/v1/authorize?provider=discord', {
+            fetch(URL + '/auth/v1/token?grant_type=authorization_code&code=' + code, {
                 method: 'POST',
                 headers: { 'apikey': KEY, 'Content-Type': 'application/json' }
-            }).then(() => {
-                location.href = 'dashboard.html'
-            })
+            }).then(r => r.json()).then(data => {
+                if (data.access_token) {
+                    localStorage.setItem('mehis_token', data.access_token)
+                    if (data.refresh_token) localStorage.setItem('mehis_refresh', data.refresh_token)
+                    location.href = 'dashboard.html'
+                } else {
+                    alert('Login failed: ' + JSON.stringify(data))
+                }
+            }).catch(e => alert('Login error: ' + e))
         }
     }
     
