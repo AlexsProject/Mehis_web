@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Checkout - Mehis</title>
+    <style>
+        :root { --primary: #2C3E50; --green: #4CAF50; }
+        body { background: #F5F5DC; font-family: -apple-system, sans-serif; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        h1 { color: var(--primary); text-align: center; }
+        .subtitle { color: #666; text-align: center; margin-bottom: 30px; }
+        
+        /* Order Summary */
+        .summary { background: white; border-radius: 16px; padding: 25px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .summary-title { font-size: 18px; font-weight: 600; color: var(--primary); margin-bottom: 15px; }
+        
+        .plan-row { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .plan-name { font-weight: 600; font-size: 18px; }
+        .plan-price { font-size: 24px; font-weight: 700; color: var(--primary); }
+        
+        .total-row { display: flex; justify-content: space-between; padding: 15px 0; font-size: 18px; }
+        .total-price { font-weight: 700; color: var(--green); }
+        
+        /* Payment Methods */
+        .payment-title { font-size: 18px; font-weight: 600; margin-bottom: 15px; }
+        
+        .payment-option {
+            background: white; border: 2px solid #ddd; border-radius: 12px; padding: 20px;
+            margin-bottom: 15px; cursor: pointer; transition: all 0.2s;
+        }
+        .payment-option:hover { border-color: var(--primary); }
+        .payment-option.selected { border-color: var(--primary); background: #f8f4f0; }
+        
+        .payment-header { display: flex; align-items: center; gap: 15px; }
+        .payment-icon { font-size: 24px; }
+        .payment-name { font-weight: 600; }
+        .payment-desc { color: #666; font-size: 14px; margin-left: 39px; }
+        
+        .btn-pay {
+            width: 100%; padding: 16px; background: var(--primary); color: white;
+            border: none; border-radius: 8px; font-size: 18px; font-weight: 600;
+            cursor: pointer; margin-top: 20px;
+        }
+        .btn-pay:hover { background: #D4A574; }
+        
+        .btn-back { display: block; text-align: center; margin-top: 15px; color: #666; text-decoration: none; }
+        
+        .secure { text-align: center; color: #666; font-size: 14px; margin-top: 20px; }
+        
+        /* Coming Soon */
+        .coming-soon { text-align: center; padding: 40px; color: #666; }
+        .coming-soon h2 { color: var(--primary); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Checkout</h1>
+        <p class="subtitle">Complete your order</p>
+        
+        <div class="summary">
+            <div class="summary-title">Order Summary</div>
+            
+            <div class="plan-row">
+                <div class="plan-name" id="plan-name">Premium Monthly</div>
+                <div class="plan-price" id="plan-price">€9.99</div>
+            </div>
+            
+            <div class="total-row">
+                <span>Total today</span>
+                <span class="total-price" id="total-price">€9.99</span>
+            </div>
+        </div>
+        
+        <div class="payment-title">Payment Method</div>
+        
+        <div class="payment-option selected" onclick="selectPayment('card')">
+            <div class="payment-header">
+                <input type="radio" name="payment" checked>
+                <span class="payment-icon">💳</span>
+                <span class="payment-name">Credit / Debit Card</span>
+            </div>
+            <div class="payment-desc">Visa, Mastercard, Maestro</div>
+        </div>
+        
+        <div class="payment-option" onclick="selectPayment('paypal')">
+            <div class="payment-header">
+                <input type="radio" name="payment">
+                <span class="payment-icon">🅿️</span>
+                <span class="payment-name">PayPal</span>
+            </div>
+            <div class="payment-desc">Pay with your PayPal account</div>
+        </div>
+        
+        <button class="btn-pay" onclick="processPayment()">
+            <span id="btn-text">Pay €9.99</span>
+        </button>
+        
+        <a href="register.html" class="btn-back">← Choose Different Plan</a>
+        
+        <p class="secure">🔒 Secure payment powered by Paddle</p>
+    </div>
+
+    <script>
+    // Get plan from URL params
+    const params = new URLSearchParams(window.location.search)
+    const plan = params.get('plan') || 'premium'
+    const billing = params.get('billing') || 'monthly'
+    
+    // Plan details
+    const plans = {
+        'premium': { monthly: 9.99, annual: 99, name: 'Premium' },
+        'family': { monthly: 19.99, annual: 199, name: 'Family' }
+    }
+    
+    const p = plans[plan] || plans['premium']
+    const price = billing === 'annual' ? p.annual : p.monthly
+    const period = billing === 'annual' ? '/year' : '/mo'
+    
+    // Update UI
+    document.getElementById('plan-name').textContent = p.name + ' ' + (billing === 'annual' ? 'Annual' : 'Monthly')
+    document.getElementById('plan-price').textContent = '€' + price
+    document.getElementById('total-price').textContent = '€' + price
+    document.getElementById('btn-text').textContent = 'Pay €' + price
+    
+    function selectPayment(method) {
+        document.querySelectorAll('.payment-option').forEach(el => el.classList.remove('selected'))
+        event.currentTarget.classList.add('selected')
+    }
+    
+    function processPayment() {
+        const btn = document.getElementById('btn-text')
+        btn.textContent = 'Processing...'
+        
+        // Payment integration coming soon
+        // For now, redirect to registration with plan info
+        setTimeout(() => {
+            alert('Payment system is being set up! For now, you can create a free account.')
+            location.href = 'register.html?plan=' + plan + '&billing=' + billing
+        }, 500)
+    }
+    </script>
+</body>
+</html>

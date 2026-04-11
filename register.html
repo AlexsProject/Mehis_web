@@ -215,26 +215,20 @@
         document.querySelectorAll('.plan-card').forEach(el => el.classList.remove('selected'))
         document.querySelector(`[data-plan="${plan}"]`).classList.add('selected')
         
-        // Show form
+        // For premium/family, go directly to checkout
+        if (plan !== 'free') {
+            const billing = isAnnual ? 'annual' : 'monthly'
+            location.href = 'checkout.html?plan=' + plan + '&billing=' + billing
+            return
+        }
+        
+        // For free, show signup form
         document.getElementById('plan-cards').style.display = 'none'
         document.querySelector('.toggle-container').style.display = 'none'
         document.getElementById('signup-form').classList.add('visible')
         
-        // Banner
-        const planNames = {
-            'free': 'Free',
-            'premium': isAnnual ? 'Premium Annual (€99/yr)' : 'Premium Monthly (€9.99/mo)',
-            'family': isAnnual ? 'Family Annual (€199/yr)' : 'Family Monthly (€19.99/mo)'
-        }
-        document.getElementById('selected-plan-name').textContent = planNames[plan]
-        
-        if (plan !== 'free') {
-            document.getElementById('banner').style.display = 'block'
-            document.getElementById('submit-btn').textContent = plan === 'premium' ? 'Continue to Payment' : 'Continue to Payment'
-        } else {
-            document.getElementById('banner').style.display = 'none'
-            document.getElementById('submit-btn').textContent = 'Create Free Account'
-        }
+        document.getElementById('banner').style.display = 'none'
+        document.getElementById('submit-btn').textContent = 'Create Free Account'
     }
     
     function showPlans() {
